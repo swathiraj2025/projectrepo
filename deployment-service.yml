@@ -1,59 +1,17 @@
-apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: DATA+OMITTED
-    server: https://808973058B2EA53F2EF78499BEBE0D8C.gr7.ap-south-1.eks.amazonaws.com
-  name: EKS-1.ap-south-1.eksctl.io
-- cluster:
-    certificate-authority-data: DATA+OMITTED
-    server: https://808973058B2EA53F2EF78499BEBE0D8C.gr7.ap-south-1.eks.amazonaws.com
-  name: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-contexts:
-- context:
-    cluster: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-    user: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-  name: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-- context:
-    cluster: EKS-1.ap-south-1.eksctl.io
-    user: micro-serv@EKS-1.ap-south-1.eksctl.io
-  name: micro-serv@EKS-1.ap-south-1.eksctl.io
-current-context: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-kind: Config
-preferences: {}
-users:
-- name: arn:aws:eks:ap-south-1:977098983246:cluster/EKS-1
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      args:
-      - --region
-      - ap-south-1
-      - eks
-      - get-token
-      - --cluster-name
-      - EKS-1
-      - --output
-      - json
-      command: aws
-      env: null
-      interactiveMode: IfAvailable
-      provideClusterInfo: false
-- name: micro-serv@EKS-1.ap-south-1.eksctl.io
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      args:
-      - eks
-      - get-token
-      - --output
-      - json
-      - --cluster-name
-      - EKS-1
-      - --region
-      - ap-south-1
-      command: aws
-      env:
-      - name: AWS_STS_REGIONAL_ENDPOINTS
-        value: regional
-      interactiveMode: IfAvailable
-      provideClusterInfo: false
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+      - name: java-app-container
+        image: java-app
